@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101211">
+    <meta name="description" content="Discover a more considered approach to paint protection. Explore Lumina Shield's paint protection film services and request a tailored quote.">
+    <title>Lumina Shield — Protection, beautifully considered</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js"
+            }
+        }
+    </script>
+    <style>
+        :root {
+            color-scheme: light;
+            --paper: #f4f2ec;
+            --paper-deep: #e9e6dd;
+            --ink: #171b19;
+            --muted: #737a73;
+            --green: #415c4d;
+            --green-dark: #25392f;
+            --gold: #c3a36c;
+            --line: rgba(23, 27, 25, .13);
+            --white: #fbfaf6;
+            --serif: "Cormorant Garamond", Georgia, serif;
+            --sans: "Manrope", Arial, sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 82px; }
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--sans);
+            -webkit-font-smoothing: antialiased;
+        }
+        body.intro-locked { overflow: hidden; }
+        a { color: inherit; }
+        button { color: inherit; font: inherit; }
+        ::selection { background: #d9c49b; color: var(--ink); }
+        .container { width: min(1320px, calc(100% - 96px)); margin-inline: auto; }
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--green);
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .19em;
+            line-height: 1.5;
+            text-transform: uppercase;
+        }
+        .eyebrow::before { width: 26px; height: 1px; background: var(--gold); content: ""; }
+        .serif { font-family: var(--serif); font-weight: 400; letter-spacing: -.035em; }
+        .button {
+            min-height: 52px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 13px;
+            padding: 0 23px;
+            border: 1px solid var(--green);
+            border-radius: 2px;
+            background: var(--green);
+            color: white;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .09em;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color .25s ease, background .25s ease, border-color .25s ease, transform .25s ease;
+        }
+        .button:hover { transform: translateY(-2px); border-color: var(--gold); background: var(--green-dark); }
+        .button svg { width: 16px; height: 16px; }
+        .button-outline { border-color: rgba(255,255,255,.38); background: transparent; color: white; }
+        .button-outline:hover { border-color: var(--gold); background: rgba(255,255,255,.08); }
+
+        .intro {
+            position: fixed;
+            z-index: 100;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse at 50% 55%, rgba(75, 97, 80, .26), transparent 48%),
+                #101211;
+            color: #f4f2ec;
+            transition: opacity .8s ease, visibility .8s ease, transform 1s cubic-bezier(.2,.7,.1,1);
+        }
+        .intro::before, .intro::after {
+            position: absolute;
+            width: min(72vw, 950px);
+            aspect-ratio: 1;
+            border: 1px solid rgba(195, 163, 108, .13);
+            border-radius: 50%;
+            content: "";
+            pointer-events: none;
+        }
+        .intro::after { width: min(88vw, 1160px); border-color: rgba(255,255,255,.055); }
+        .intro-content {
+            position: relative;
+            z-index: 2;
+            width: min(780px, calc(100% - 44px));
+            margin-top: -5vh;
+            text-align: center;
+            animation: intro-rise 1.2s .15s both cubic-bezier(.2,.8,.2,1);
+        }
+        .intro-kicker { color: var(--gold); font-size: .65rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; }
+        .intro h1 { margin: 23px 0 10px; font-size: clamp(4rem, 11vw, 9.4rem); line-height: .76; }
+        .intro-subtitle { margin: 24px 0 30px; color: rgba(244,242,236,.67); font-size: .73rem; letter-spacing: .2em; text-transform: uppercase; }
+        .intro-car-wrap { position: relative; width: min(1050px, 110%); height: clamp(220px, 40vw, 370px); margin: 0 auto 20px; }
+        .intro-car-wrap::before {
+            position: absolute;
+            inset: 48% 5% 3%;
+            border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(179, 157, 112, .24), transparent 68%);
+            content: "";
+            filter: blur(16px);
+        }
+        .intro-car { position: absolute; inset: 0; width: 100%; height: 100%; }
+        .intro-car-fallback {
+            position: absolute;
+            top: 30%;
+            left: 14%;
+            width: 72%;
+            height: 48%;
+            border: 1px solid rgba(231,226,210,.48);
+            border-radius: 52% 40% 20% 18%;
+            background: linear-gradient(160deg, rgba(220,218,207,.26), rgba(71,83,72,.15));
+            box-shadow: 0 36px 70px rgba(0,0,0,.3);
+            transform: skewX(-15deg);
+        }
+        .intro-car-fallback::before {
+            position: absolute;
+            top: -45%;
+            left: 26%;
+            width: 48%;
+            height: 55%;
+            border: 1px solid rgba(231,226,210,.3);
+            border-radius: 65% 30% 0 0;
+            background: rgba(184,193,188,.1);
+            content: "";
+        }
+        .intro-car-fallback::after {
+            position: absolute;
+            bottom: -23%;
+            left: 16%;
+            width: 68%;
+            height: 30%;
+            border-radius: 50%;
+            background: radial-gradient(ellipse, #070808 38%, #a18b62 41%, #1c201d 48%, transparent 51%);
+            content: "";
+        }
+        .intro-actions { display: flex; align-items: center; justify-content: center; gap: 24px; }
+        .intro-enter { min-width: 214px; border-color: var(--gold); background: var(--gold); color: #171914; }
+        .intro-enter:hover { border-color: #d9bf8e; background: #d9bf8e; }
+        .intro-skip { border: 0; background: transparent; color: rgba(255,255,255,.6); font-size: .64rem; letter-spacing: .12em; text-decoration: underline; text-underline-offset: 5px; text-transform: uppercase; cursor: pointer; }
+        .intro.is-entered { visibility: hidden; opacity: 0; transform: scale(1.035); pointer-events: none; }
+        @keyframes intro-rise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .site-header {
+            position: sticky;
+            z-index: 30;
+            top: 0;
+            border-bottom: 1px solid rgba(23,27,25,.08);
+            background: rgba(244,242,236,.91);
+            backdrop-filter: blur(18px);
+        }
+        .nav { min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+        .brand { display: inline-flex; align-items: center; gap: 11px; color: var(--ink); font-size: .85rem; font-weight: 700; letter-spacing: .035em; text-decoration: none; white-space: nowrap; }
+        .brand-mark {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            color: var(--green-dark);
+            font-family: var(--serif);
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .brand-name span { color: var(--green); }
+        .nav-links { display: flex; align-items: center; gap: clamp(20px, 3vw, 42px); }
+        .nav-links a { color: #5c625c; font-size: .67rem; font-weight: 700; letter-spacing: .1em; text-decoration: none; text-transform: uppercase; transition: color .2s ease; }
+        .nav-links a:hover { color: var(--green); }
+        .nav > .button { min-height: 43px; padding-inline: 16px; font-size: .61rem; }
+        .menu-toggle { display: none; }
+
+        .hero {
+            position: relative;
+            height: 400svh;
+            min-height: 2600px;
+            overflow: clip;
+            background: #111412;
+            color: #f4f2ec;
+        }
+        .hero-sticky {
+            position: sticky;
+            top: 78px;
+            height: calc(100svh - 78px);
+            min-height: 580px;
+            overflow: hidden;
+            isolation: isolate;
+            background:
+                radial-gradient(ellipse at 54% 48%, rgba(70,83,70,.32), transparent 40%),
+                radial-gradient(ellipse at 65% 110%, rgba(190,161,109,.11), transparent 45%),
+                #111412;
+        }
+        .hero-sticky::before {
+            position: absolute;
+            inset: 13%;
+            z-index: -1;
+            border: 1px solid rgba(195,163,108,.13);
+            border-radius: 50%;
+            box-shadow: 0 0 0 62px rgba(195,163,108,.025), 0 0 0 126px rgba(195,163,108,.018);
+            content: "";
+            pointer-events: none;
+        }
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            padding: 0;
+        }
+        .hero-copy {
+            position: absolute;
+            z-index: 3;
+            top: 50%;
+            left: max(48px, calc((100vw - 1320px) / 2));
+            width: min(37vw, 490px);
+            padding: 24px 0 20px;
+            transform: translateY(-50%);
+            transition: opacity .5s ease, transform .65s cubic-bezier(.2,.7,.2,1);
+        }
+        .hero-copy.is-scrolling {
+            opacity: 0;
+            transform: translate(-30px, -50%);
+            pointer-events: none;
+        }
+        .hero-stage {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+        }
+        .hero-stage::before {
+            position: absolute;
+            inset: 11% 15% 10%;
+            border: 1px solid rgba(255,255,255,.055);
+            border-radius: 50%;
+            content: "";
+            transform: rotate(-15deg);
+        }
+        .hero-stage::after {
+            position: absolute;
+            right: 0;
+            bottom: 12%;
+            left: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(208,189,150,.25), transparent);
+            content: "";
+        }
+        .hero-stage .scene-canvas { z-index: 1; }
+        .hero .stage-index { top: 9%; right: max(35px, calc((100vw - 1320px) / 2)); }
+        .hero .stage-label { right: max(35px, calc((100vw - 1320px) / 2)); bottom: 7%; }
+        .cinema-copy {
+            position: absolute;
+            z-index: 3;
+            top: 42%;
+            width: min(25vw, 320px);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(28px);
+            transition: opacity .5s ease, transform .7s cubic-bezier(.2,.7,.2,1);
+        }
+        .cinema-copy.is-active { opacity: 1; transform: translateY(0); }
+        .cinema-copy--left { left: max(48px, calc((100vw - 1320px) / 2)); text-align: left; }
+        .cinema-copy--right { right: max(48px, calc((100vw - 1320px) / 2)); text-align: right; }
+        .cinema-copy span { display: block; margin-bottom: 13px; color: #c5aa78; font-size: .59rem; font-weight: 700; letter-spacing: .2em; }
+        .cinema-copy strong { display: block; font-family: var(--serif); font-size: clamp(2rem, 4vw, 4rem); font-weight: 400; letter-spacing: -.045em; line-height: .95; }
+        .cinema-copy p { margin: 12px 0 0; color: rgba(244,242,236,.61); font-size: .69rem; line-height: 1.8; }
+        .cinema-progress { position: absolute; z-index: 4; right: 50%; bottom: 4.5%; width: min(420px, 44vw); transform: translateX(50%); }
+        .cinema-progress-label { display: flex; justify-content: space-between; gap: 14px; margin-bottom: 10px; color: rgba(244,242,236,.62); font-size: .55rem; letter-spacing: .14em; text-transform: uppercase; }
+        .cinema-progress-track { height: 2px; overflow: hidden; background: rgba(244,242,236,.19); }
+        .cinema-progress-fill { width: 0; height: 100%; background: linear-gradient(90deg, #c3a36c, #e7deca); }
+        .hero-sticky .scroll-cue { bottom: 1.5%; }
+        .hero .stage-fallback { top: 60%; bottom: auto; }
+        .hero .eyebrow { color: #d0bd96; }
+        .hero h1 { max-width: 620px; margin: 28px 0 22px; font-size: clamp(4.3rem, 8.3vw, 8.1rem); line-height: .77; }
+        .hero h1 span { display: block; margin-top: .13em; color: #c5aa78; font-style: italic; }
+        .hero-copy > p { max-width: 440px; margin-bottom: 31px; color: rgba(244,242,236,.64); font-size: .88rem; line-height: 1.95; }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+        .hero-note { display: flex; align-items: center; gap: 10px; margin-top: 25px; color: rgba(244,242,236,.52); font-size: .67rem; letter-spacing: .04em; }
+        .hero-note::before { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); content: ""; box-shadow: 0 0 12px rgba(195,163,108,.8); }
+        .scene-canvas { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; touch-action: pan-y; }
+        [data-scene="hero"], [data-scene="journey"] { cursor: grab; }
+        [data-scene="hero"]:active, [data-scene="journey"]:active { cursor: grabbing; }
+        .stage-label { position: absolute; z-index: 2; right: 2%; bottom: 7%; color: rgba(244,242,236,.53); font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; }
+        .model-credit { color: inherit; text-underline-offset: 3px; }
+        .stage-index { position: absolute; z-index: 2; top: 10%; right: 2%; color: rgba(244,242,236,.38); font-size: .58rem; letter-spacing: .2em; }
+        .scroll-cue { position: absolute; z-index: 2; bottom: 28px; left: 50%; display: flex; align-items: center; gap: 11px; color: rgba(244,242,236,.53); font-size: .58rem; letter-spacing: .17em; text-decoration: none; text-transform: uppercase; transform: translateX(-50%); }
+        .scroll-cue::after { width: 36px; height: 1px; background: var(--gold); content: ""; animation: cue-line 1.5s ease-in-out infinite; }
+        @keyframes cue-line { 50% { transform: scaleX(.55); opacity: .55; } }
+        .stage-fallback {
+            position: absolute;
+            z-index: 3;
+            right: 12%;
+            bottom: 12%;
+            left: 12%;
+            display: none;
+            color: #e0c99a;
+            font-size: .72rem;
+            text-align: center;
+        }
+
+        .manifesto { padding-block: 65px 72px; background: #e8e6de; }
+        .manifesto-row { display: grid; grid-template-columns: .6fr 1.4fr; align-items: center; gap: 8%; }
+        .manifesto-index { color: var(--green); font-size: .64rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+        .manifesto p { max-width: 810px; margin: 0; font-size: clamp(1.9rem, 4.2vw, 4.3rem); line-height: 1.05; }
+        .manifesto p em { color: var(--green); font-style: italic; }
+
+        .journey { position: relative; height: 235vh; min-height: 1450px; background: #f0eee8; }
+        .journey-sticky { position: sticky; top: 78px; height: calc(100svh - 78px); min-height: 590px; display: grid; align-items: center; overflow: hidden; }
+        .journey-sticky::before { position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 48%, rgba(201,194,171,.22), transparent 48%); content: ""; }
+        .journey-grid { position: relative; display: grid; grid-template-columns: .72fr 1.28fr; align-items: center; gap: 5%; }
+        .journey-copy { position: relative; z-index: 2; }
+        .journey-copy h2 { margin: 20px 0 17px; font-size: clamp(3.3rem, 6.5vw, 6.5rem); line-height: .83; }
+        .journey-copy h2 em { color: var(--green); }
+        .journey-copy > p { max-width: 440px; margin: 0; color: var(--muted); font-size: .8rem; line-height: 1.9; }
+        .journey-step { min-height: 48px; margin-top: 29px; color: var(--green); font-size: .64rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+        .progress-label { display: flex; justify-content: space-between; gap: 10px; margin: 8px 0; color: var(--muted); font-size: .59rem; letter-spacing: .1em; text-transform: uppercase; }
+        .progress-track { height: 2px; overflow: hidden; background: rgba(23,27,25,.13); }
+        .progress-fill { width: 0; height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); transition: width .12s linear; }
+        .journey-visual { position: relative; height: min(65vw, 700px); min-height: 400px; }
+        .journey-visual::before { position: absolute; inset: 12% 4%; border: 1px solid rgba(23,27,25,.1); border-radius: 50%; content: ""; transform: rotate(-13deg); }
+        .journey-visual .scene-canvas { z-index: 1; }
+        .journey-visual .stage-label { bottom: 13%; color: #74796f; }
+        .scroll-number { position: absolute; z-index: 2; top: 9%; right: 3%; color: rgba(23,27,25,.35); font-size: .62rem; letter-spacing: .15em; }
+        .journey-hint { position: absolute; z-index: 2; right: 5%; bottom: 6%; color: var(--muted); font-size: .59rem; letter-spacing: .13em; text-transform: uppercase; }
+        .journey .stage-fallback { color: var(--green); }
+
+        .services { padding-block: 125px; background: var(--white); }
+        .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 36px; margin-bottom: 53px; }
+        .section-heading h2 { max-width: 650px; margin: 16px 0 0; font-size: clamp(3rem, 6vw, 6rem); line-height: .86; }
+        .section-heading > p { max-width: 340px; margin: 0 0 3px; color: var(--muted); font-size: .76rem; line-height: 1.9; }
+        .service-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .service-card { min-height: 300px; padding: 30px 27px 32px; transition: background .3s ease; }
+        .service-card + .service-card { border-left: 1px solid var(--line); }
+        .service-card:hover { background: #f1f0ea; }
+        .service-number { display: block; margin-bottom: 55px; color: var(--gold); font-size: .65rem; letter-spacing: .16em; }
+        .service-card h3 { margin: 0 0 12px; font-size: 1.2rem; font-weight: 600; letter-spacing: -.04em; }
+        .service-card p { max-width: 330px; margin: 0; color: var(--muted); font-size: .74rem; line-height: 1.9; }
+
+        .steps-section { padding-block: 118px; background: #19211c; color: var(--paper); }
+        .steps-section .eyebrow { color: #c5b38d; }
+        .steps-section .section-heading { margin-bottom: 85px; }
+        .steps-section .section-heading > p { color: rgba(244,242,236,.58); }
+        .steps-section .section-heading h2 { max-width: 740px; }
+        .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(255,255,255,.19); }
+        .step { min-height: 190px; padding: 23px 26px 0 0; }
+        .step + .step { padding-left: 27px; border-left: 1px solid rgba(255,255,255,.17); }
+        .step-number { display: block; margin-bottom: 46px; color: var(--gold); font-family: var(--serif); font-size: 1.6rem; }
+        .step h3 { margin: 0 0 9px; font-size: 1rem; font-weight: 600; }
+        .step p { max-width: 300px; margin: 0; color: rgba(244,242,236,.59); font-size: .72rem; line-height: 1.85; }
+
+        .packages { padding-block: 123px; }
+        .packages .section-heading { display: block; text-align: center; }
+        .packages .section-heading h2 { max-width: 760px; margin: 17px auto; }
+        .packages .section-heading > p { margin: 0 auto; }
+        .package-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 19px; max-width: 980px; margin: 0 auto; }
+        .package-card { min-height: 415px; display: flex; flex-direction: column; padding: 37px; border: 1px solid var(--line); background: var(--white); }
+        .package-card.featured { border-color: var(--green); background: #e9ede6; }
+        .package-tag { align-self: flex-start; margin-bottom: 25px; color: var(--green); font-size: .61rem; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
+        .package-card h3 { margin: 0 0 9px; font-size: 1.8rem; font-weight: 500; letter-spacing: -.05em; }
+        .package-description { min-height: 44px; margin: 0 0 20px; color: var(--muted); font-size: .73rem; line-height: 1.8; }
+        .package-price { margin-bottom: 23px; color: var(--green); font-family: var(--serif); font-size: 1.65rem; }
+        .package-list { display: grid; gap: 12px; margin: 0 0 30px; padding: 0; list-style: none; }
+        .package-list li { display: flex; gap: 11px; color: #616860; font-size: .71rem; line-height: 1.55; }
+        .package-list li::before { color: var(--green); content: "—"; }
+        .package-card .button { width: 100%; margin-top: auto; }
+        .package-card .button-outline { border-color: var(--green); color: var(--green); }
+        .package-card .button-outline:hover { background: var(--green); color: white; }
+        .price-note { margin: 24px auto 0; color: var(--muted); font-size: .66rem; text-align: center; }
+
+        .faq-section { padding-block: 112px; background: #e9e7df; }
+        .faq-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 9%; align-items: start; }
+        .faq-heading h2 { margin: 17px 0; font-size: clamp(3rem, 5.5vw, 5.3rem); line-height: .9; }
+        .faq-heading p { max-width: 320px; color: var(--muted); font-size: .74rem; line-height: 1.9; }
+        .faq-list { border-top: 1px solid var(--line); }
+        details { border-bottom: 1px solid var(--line); }
+        summary { position: relative; padding: 21px 34px 21px 0; font-size: .82rem; font-weight: 700; cursor: pointer; list-style: none; }
+        summary::-webkit-details-marker { display: none; }
+        summary::after { position: absolute; top: 50%; right: 2px; color: var(--green); content: "+"; font-size: 1.35rem; font-weight: 400; transform: translateY(-50%); }
+        details[open] summary::after { content: "−"; }
+        details p { margin: -1px 28px 20px 0; color: var(--muted); font-size: .73rem; line-height: 1.9; }
+
+        .contact { padding-block: 98px; }
+        .contact-card {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            align-items: center;
+            gap: 40px;
+            overflow: hidden;
+            padding: clamp(34px, 6vw, 78px);
+            background:
+                radial-gradient(ellipse at 100% 100%, rgba(195,163,108,.19), transparent 43%),
+                #dfe4db;
+        }
+        .contact-card::after { position: absolute; right: -12%; bottom: -120%; width: 65%; aspect-ratio: 1; border: 1px solid rgba(65,92,77,.22); border-radius: 50%; box-shadow: 0 0 0 40px rgba(65,92,77,.035), 0 0 0 80px rgba(65,92,77,.03); content: ""; }
+        .contact-copy, .contact-action { position: relative; z-index: 1; }
+        .contact-copy h2 { max-width: 690px; margin: 17px 0; font-size: clamp(3rem, 5.8vw, 5.8rem); line-height: .85; }
+        .contact-copy p { max-width: 500px; margin: 0; color: #606a60; font-size: .76rem; line-height: 1.9; }
+        .contact-action { display: grid; justify-items: start; gap: 14px; }
+        .contact-action small { color: var(--muted); font-size: .65rem; }
+        .contact-phone { color: var(--ink); font-size: .84rem; font-weight: 700; text-decoration: none; }
+        .footer { padding-block: 26px; border-top: 1px solid var(--line); color: var(--muted); font-size: .67rem; }
+        .footer-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .footer-links { display: flex; align-items: center; gap: 20px; }
+        .footer a { text-decoration: none; }
+        .footer a:hover { color: var(--green); }
+        .whatsapp-float { position: fixed; z-index: 25; right: 23px; bottom: 23px; width: 49px; height: 49px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; background: #2f7154; color: white; box-shadow: 0 9px 25px rgba(24,45,32,.22); transition: transform .2s ease; }
+        .whatsapp-float:hover { transform: translateY(-3px); }
+        .whatsapp-float svg { width: 22px; height: 22px; }
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity .75s ease, transform .75s cubic-bezier(.2,.7,.2,1); }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+        .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+        @media (max-width: 900px) {
+            .container { width: min(100% - 52px, 760px); }
+            .nav { min-height: 69px; }
+            .nav-links { gap: 16px; }
+            .nav-links a { font-size: .57rem; }
+            .hero-sticky { top: 69px; height: calc(100svh - 69px); min-height: min(580px, calc(100svh - 69px)); }
+            .hero-copy { left: 26px; width: 39vw; }
+            .hero h1 { font-size: clamp(3.6rem, 7vw, 6rem); }
+            .cinema-copy { width: 25vw; }
+            .cinema-copy--left { left: 26px; }
+            .cinema-copy--right { right: 26px; }
+            .journey-sticky { top: 69px; height: calc(100svh - 69px); }
+            .journey-grid { grid-template-columns: .8fr 1.2fr; gap: 2%; }
+            .journey-visual { height: 62vw; }
+            .section-heading { gap: 22px; }
+            .service-card { padding-inline: 20px; }
+            .contact-card { grid-template-columns: 1fr .75fr; }
+        }
+        @media (max-width: 680px) {
+            html { scroll-padding-top: 66px; }
+            .container { width: calc(100% - 38px); }
+            .intro-content { margin-top: -2vh; }
+            .intro h1 { font-size: clamp(4rem, 19vw, 7rem); }
+            .intro-subtitle { font-size: .58rem; letter-spacing: .14em; }
+            .intro-car-wrap { width: 124%; height: 280px; margin-left: -12%; }
+            .intro-actions { flex-direction: column; gap: 16px; }
+            .site-header { position: sticky; }
+            .nav { min-height: 66px; gap: 12px; }
+            .brand { font-size: .75rem; }
+            .brand-mark { width: 31px; height: 31px; }
+            .nav > .button { min-height: 39px; padding-inline: 11px; font-size: .52rem; }
+            .menu-toggle { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--line); background: transparent; cursor: pointer; }
+            .menu-toggle svg { width: 17px; height: 17px; }
+            .nav-links { position: absolute; top: calc(100% + 1px); right: 0; left: 0; display: none; align-items: stretch; padding: 8px 19px 16px; border-bottom: 1px solid var(--line); background: var(--paper); }
+            .nav-links.is-open { display: grid; }
+            .nav-links a { padding: 13px 0; border-bottom: 1px solid var(--line); font-size: .65rem; }
+            .hero { height: 400svh; min-height: 2600px; }
+            .hero-sticky { top: 66px; height: calc(100svh - 66px); min-height: 0; }
+            .hero-sticky::before { inset: 21% 8% 17%; box-shadow: 0 0 0 32px rgba(195,163,108,.02), 0 0 0 64px rgba(195,163,108,.014); }
+            .hero-grid { inset: 0; }
+            .hero-copy { top: 6%; left: 19px; width: calc(100% - 38px); padding: 0; transform: none; }
+            .hero-copy.is-scrolling { transform: translateY(-18px); }
+            .hero .eyebrow { font-size: .58rem; }
+            .hero h1 { max-width: 340px; margin: 14px 0 11px; font-size: clamp(3.4rem, 13vw, 5rem); }
+            .hero-copy > p { max-width: 340px; margin-bottom: 13px; font-size: .68rem; line-height: 1.65; }
+            .hero-actions { gap: 7px; }
+            .hero-actions .button { min-height: 39px; padding-inline: 11px; font-size: .5rem; }
+            .hero-note { margin-top: 10px; font-size: .53rem; }
+            .hero-stage { inset: 0; width: 100%; height: 100%; max-height: none; min-height: 0; margin: 0; }
+            .hero .stage-index { top: 4%; right: 19px; }
+            .hero .stage-label { right: 19px; bottom: 10%; font-size: .46rem; }
+            .cinema-copy { top: 48%; width: 45%; }
+            .cinema-copy--left { left: 19px; }
+            .cinema-copy--right { top: auto; right: 19px; bottom: 19%; }
+            .cinema-copy span { margin-bottom: 8px; font-size: .48rem; }
+            .cinema-copy strong { font-size: clamp(1.65rem, 8vw, 2.5rem); }
+            .cinema-copy p { margin-top: 6px; font-size: .57rem; }
+            .cinema-progress { bottom: 5%; width: calc(100% - 100px); }
+            .cinema-progress-label { margin-bottom: 7px; font-size: .48rem; }
+            .hero-sticky .scroll-cue { bottom: 1.3%; font-size: .46rem; }
+            .hero .stage-fallback { top: 64%; }
+            .manifesto { padding-block: 48px; }
+            .manifesto-row { grid-template-columns: 1fr; gap: 19px; }
+            .manifesto p { font-size: clamp(2.1rem, 9vw, 3.5rem); }
+            .journey { height: 210vh; min-height: 1280px; }
+            .journey-sticky { top: 66px; height: calc(100svh - 66px); min-height: 640px; align-items: center; }
+            .journey-grid { grid-template-columns: 1fr; gap: 0; align-content: center; }
+            .journey-copy h2 { margin: 14px 0 12px; font-size: clamp(3.4rem, 14vw, 5rem); }
+            .journey-copy > p { max-width: 450px; font-size: .72rem; }
+            .journey-step { min-height: 23px; margin-top: 15px; font-size: .58rem; }
+            .journey-visual { height: 79vw; min-height: 285px; max-height: 410px; margin: 0 -8px; }
+            .journey-hint { right: 7%; bottom: 5%; font-size: .52rem; }
+            .services, .packages { padding-block: 77px; }
+            .section-heading { display: block; margin-bottom: 33px; }
+            .section-heading h2 { margin-top: 13px; font-size: clamp(3rem, 13vw, 4.6rem); }
+            .section-heading > p { margin-top: 16px; font-size: .71rem; }
+            .service-grid { grid-template-columns: 1fr; }
+            .service-card { min-height: auto; padding: 24px 4px 27px; }
+            .service-card + .service-card { border-top: 1px solid var(--line); border-left: 0; }
+            .service-number { margin-bottom: 24px; }
+            .service-card h3 { font-size: 1.1rem; }
+            .service-card p { font-size: .72rem; }
+            .steps-section { padding-block: 77px; }
+            .steps-section .section-heading { margin-bottom: 45px; }
+            .steps-grid { grid-template-columns: 1fr; }
+            .step, .step + .step { min-height: auto; padding: 20px 0 22px; border: 0; border-bottom: 1px solid rgba(255,255,255,.17); }
+            .step-number { margin-bottom: 17px; }
+            .step p { max-width: 420px; }
+            .package-grid { grid-template-columns: 1fr; gap: 12px; }
+            .package-card { min-height: 385px; padding: 27px; }
+            .package-description { min-height: 0; }
+            .faq-section { padding-block: 78px; }
+            .faq-layout { grid-template-columns: 1fr; gap: 24px; }
+            .faq-heading h2 { margin: 13px 0; font-size: clamp(3rem, 13vw, 4.6rem); }
+            .faq-heading p { font-size: .72rem; }
+            summary { font-size: .75rem; }
+            .contact { padding-block: 68px; }
+            .contact-card { grid-template-columns: 1fr; gap: 26px; padding: 30px 23px; }
+            .contact-copy h2 { font-size: clamp(3rem, 13vw, 4.6rem); }
+            .contact-copy p { font-size: .72rem; }
+            .contact-action .button { width: 100%; }
+            .footer-row { flex-wrap: wrap; }
+            .footer-row > div:first-of-type { width: 100%; order: 3; }
+            .footer-links { flex-wrap: wrap; gap: 13px; }
+            .whatsapp-float { right: 15px; bottom: 15px; width: 45px; height: 45px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body class="intro-locked">
+    <div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title">
+        <div class="intro-content">
+            <div class="intro-kicker">Lumina Shield presents</div>
+            <h1 class="serif" id="intro-title">The art of<br><em>preservation.</em></h1>
+            <p class="intro-subtitle">A more considered kind of car care</p>
+            <div class="intro-car-wrap" aria-hidden="true">
+                <div class="intro-car-fallback"></div>
+                <canvas class="intro-car scene-canvas" data-scene="intro" aria-label="Interactive original 3D car model"></canvas>
+            </div>
+            <div class="intro-actions">
+                <button class="button intro-enter" id="enter-experience" type="button">Enter the experience <span aria-hidden="true">→</span></button>
+                <button class="intro-skip" id="skip-intro" type="button">Skip intro</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="site-header">
+        <div class="container nav">
+            <a class="brand" href="#home" aria-label="Lumina Shield home">
+                <span class="brand-mark">L</span>
+                <span class="brand-name">LUMINA <span>SHIELD</span></span>
+            </a>
+            <nav class="nav-links" id="primary-navigation" aria-label="Main navigation">
+                <a href="#journey">The experience</a>
+                <a href="#services">Services</a>
+                <a href="#packages">Coverage</a>
+                <a href="#faq">FAQ</a>
+            </nav>
+            <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-navigation">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+            <a class="button" data-whatsapp data-message="Hello, I'd like a tailored paint protection quote for my car." href="https://wa.me/201035419531">Request a quote <span aria-hidden="true">↗</span></a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-sticky">
+                <div class="container hero-grid">
+                    <div class="hero-copy">
+                        <span class="eyebrow">A quieter kind of confidence</span>
+                        <h1 class="serif">Keep the<br><span>feeling new.</span></h1>
+                        <p>Thoughtfully applied paint protection film helps preserve the finish you fell in love with—so the road leaves less of a mark.</p>
+                        <div class="hero-actions">
+                            <a class="button" data-whatsapp data-message="Hello, I'd like to book a consultation about paint protection film for my car." href="https://wa.me/201035419531">Find your protection <span aria-hidden="true">↗</span></a>
+                            <a class="button button-outline" href="#journey">Explore the process <span aria-hidden="true">↓</span></a>
+                        </div>
+                        <div class="hero-note">A tailored recommendation, made around your car.</div>
+                    </div>
+                    <div class="hero-stage" data-stage>
+                        <canvas class="scene-canvas" data-scene="hero" aria-label="Interactive 3D Mercedes-Benz S65 AMG. Scroll to explore cinematic camera views or drag to rotate."></canvas>
+                        <span class="stage-index">01 / THE ORIGINAL</span>
+                        <span class="stage-label">Mercedes-Benz S65 AMG · <a class="model-credit" href="https://sketchfab.com/3d-models/2015-mercedes-benz-s65-amg-coupe-a9a2e24df28049ce83e9c35cc1a2b3fa" target="_blank" rel="noopener noreferrer">Model by Ddiaz Design</a></span>
+                        <div class="cinema-copy cinema-copy--left" data-cinema-copy aria-hidden="true">
+                            <span>01 / THE ORIGINAL</span>
+                            <strong>Every line,<br>considered.</strong>
+                            <p>A first look at the shape behind the finish.</p>
+                        </div>
+                        <div class="cinema-copy cinema-copy--right" data-cinema-copy aria-hidden="true">
+                            <span>01 / THE ORIGINAL</span>
+                            <strong>A shape<br>of its own.</strong>
+                            <p>Every detail deserves a closer look.</p>
+                        </div>
+                        <div class="cinema-copy cinema-copy--left" data-cinema-copy aria-hidden="true">
+                            <span>02 / EVERY ANGLE</span>
+                            <strong>Made for<br>every curve.</strong>
+                            <p>Protection that follows the lines of your car.</p>
+                        </div>
+                        <div class="cinema-copy cinema-copy--right" data-cinema-copy aria-hidden="true">
+                            <span>02 / EVERY ANGLE</span>
+                            <strong>Considered<br>from every side.</strong>
+                            <p>A different perspective. The same attention to detail.</p>
+                        </div>
+                        <div class="cinema-copy cinema-copy--left" data-cinema-copy aria-hidden="true">
+                            <span>03 / THE FINISH</span>
+                            <strong>Clarity,<br>preserved.</strong>
+                            <p>Keep the finish in view, not the film.</p>
+                        </div>
+                        <div class="cinema-copy cinema-copy--right" data-cinema-copy aria-hidden="true">
+                            <span>03 / THE FINISH</span>
+                            <strong>The beauty<br>stays yours.</strong>
+                            <p>Subtle protection for a finish worth keeping.</p>
+                        </div>
+                        <div class="cinema-copy cinema-copy--left" data-cinema-copy aria-hidden="true">
+                            <span>04 / MADE TO LAST</span>
+                            <strong>Yours to<br>keep.</strong>
+                            <p>Thoughtful protection for every drive ahead.</p>
+                        </div>
+                        <div class="cinema-copy cinema-copy--right" data-cinema-copy aria-hidden="true">
+                            <span>04 / THE ROAD AHEAD</span>
+                            <strong>Keep every<br>moment.</strong>
+                            <p>Let the next drive feel like the first.</p>
+                        </div>
+                        <div class="stage-fallback" role="status"></div>
+                    </div>
+                </div>
+                <div class="cinema-progress" aria-label="Cinematic car showcase progress">
+                    <div class="cinema-progress-label"><span id="cinema-progress-caption">The original finish</span><span id="cinema-progress-number">Scroll to explore</span></div>
+                    <div class="cinema-progress-track" role="progressbar" aria-label="Cinematic car showcase progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="cinema-progress-fill" id="cinema-progress-fill"></div>
+                    </div>
+                </div>
+                <a class="scroll-cue" href="#manifesto">Scroll to discover</a>
+            </div>
+        </section>
+
+        <section class="manifesto" id="manifesto">
+            <div class="container manifesto-row reveal">
+                <span class="manifesto-index">Made for the moments<br>you want to keep.</span>
+                <p class="serif">The best protection is almost invisible. Its presence is felt in every <em>uninterrupted detail.</em></p>
+            </div>
+        </section>
+
+        <section class="journey" id="journey" aria-labelledby="journey-title">
+            <div class="journey-sticky">
+                <div class="container journey-grid">
+                    <div class="journey-copy">
+                        <span class="eyebrow">A closer look at the finish</span>
+                        <h2 class="serif" id="journey-title">Care in<br><em>every layer.</em></h2>
+                        <p>Follow a considered protection story. As you scroll, explore a handcrafted car in three dimensions and watch an illustrative clear film move across its finish.</p>
+                        <div class="journey-step" id="journey-step" aria-live="polite">01 — The original finish</div>
+                        <div class="progress-label"><span>Protection journey</span><span id="progress-number">0%</span></div>
+                        <div class="progress-track" role="progressbar" aria-label="Protection journey progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                    </div>
+                    <div class="journey-visual" data-stage>
+                        <canvas class="scene-canvas" data-scene="journey" aria-label="Interactive 3D car with an illustrative paint protection film overlay. Drag to rotate."></canvas>
+                        <span class="scroll-number">02 / THE PROCESS</span>
+                        <span class="stage-label">A visual interpretation · not an installation guide</span>
+                        <span class="journey-hint">Keep scrolling to explore</span>
+                        <div class="stage-fallback" role="status"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="services" id="services">
+            <div class="container">
+                <div class="section-heading reveal">
+                    <div>
+                        <span class="eyebrow">Protection, your way</span>
+                        <h2 class="serif">Considered<br>from every angle.</h2>
+                    </div>
+                    <p>Every car and every driver is different. We will help you explore the coverage options available for your vehicle.</p>
+                </div>
+                <div class="service-grid">
+                    <article class="service-card reveal">
+                        <span class="service-number">01 — FOCUSED COVERAGE</span>
+                        <h3>Front-end protection</h3>
+                        <p>Protect selected forward-facing areas—such as the bonnet, bumper and mirrors—according to the coverage you choose.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <span class="service-number">02 — EXTENSIVE COVERAGE</span>
+                        <h3>Full-body protection</h3>
+                        <p>Explore broader paint coverage, with film options and installation details discussed around your car's model.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <span class="service-number">03 — THOUGHTFUL EXTRAS</span>
+                        <h3>Additional care</h3>
+                        <p>Ask us about other care options available for your car, and we will explain what may be suitable before you book.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="steps-section" aria-labelledby="steps-title">
+            <div class="container">
+                <div class="section-heading reveal">
+                    <div>
+                        <span class="eyebrow">Simple, from the first hello</span>
+                        <h2 class="serif" id="steps-title">A thoughtful process.<br>A clear next step.</h2>
+                    </div>
+                    <p>Good work starts with listening. Here is how we make it easy to find the right fit.</p>
+                </div>
+                <div class="steps-grid">
+                    <article class="step reveal">
+                        <span class="step-number">01</span>
+                        <h3>Tell us about your car</h3>
+                        <p>Share the make, model and year, a photo if possible, and the areas you would like to protect.</p>
+                    </article>
+                    <article class="step reveal">
+                        <span class="step-number">02</span>
+                        <h3>Get a tailored recommendation</h3>
+                        <p>We will explain available coverage and costs for your car and answer your questions before you decide.</p>
+                    </article>
+                    <article class="step reveal">
+                        <span class="step-number">03</span>
+                        <h3>Choose a time that works</h3>
+                        <p>Once the details are clear, we will agree on an appointment and arrange drop-off and collection.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="packages" id="packages">
+            <div class="container">
+                <div class="section-heading reveal">
+                    <span class="eyebrow">A place to begin</span>
+                    <h2 class="serif">The right coverage<br>starts with a conversation.</h2>
+                    <p>Explore a starting point, then tailor the details to your vehicle.</p>
+                </div>
+                <div class="package-grid">
+                    <article class="package-card reveal">
+                        <span class="package-tag">Focused protection</span>
+                        <h3>Front-end coverage</h3>
+                        <p class="package-description">A considered option for the areas most exposed to the road.</p>
+                        <div class="package-price">Tailored quote</div>
+                        <ul class="package-list">
+                            <li>Discuss bonnet, bumper and mirror coverage</li>
+                            <li>Film options based on your vehicle</li>
+                            <li>Scope agreed before you book</li>
+                        </ul>
+                        <a class="button button-outline" data-whatsapp data-message="Hello, I'd like to ask about front-end paint protection coverage for my car." href="https://wa.me/201035419531">Ask about coverage <span aria-hidden="true">↗</span></a>
+                    </article>
+                    <article class="package-card featured reveal">
+                        <span class="package-tag">Extended protection</span>
+                        <h3>Full-body coverage</h3>
+                        <p class="package-description">A broader approach to preserving more of your car's painted finish.</p>
+                        <div class="package-price">Tailored quote</div>
+                        <ul class="package-list">
+                            <li>Discuss broader paint coverage</li>
+                            <li>Details considered around your model</li>
+                            <li>Options explained before confirmation</li>
+                        </ul>
+                        <a class="button" data-whatsapp data-message="Hello, I'd like to ask about full-body paint protection coverage for my car." href="https://wa.me/201035419531">Explore full coverage <span aria-hidden="true">↗</span></a>
+                    </article>
+                </div>
+                <p class="price-note">Coverage, availability and pricing depend on your vehicle and the options selected. Ask for details before booking.</p>
+            </div>
+        </section>
+
+        <section class="faq-section" id="faq">
+            <div class="container faq-layout">
+                <div class="faq-heading reveal">
+                    <span class="eyebrow">Good to know</span>
+                    <h2 class="serif">A few things<br>you may wonder.</h2>
+                    <p>Still have a question? We are happy to talk through the details with you.</p>
+                </div>
+                <div class="faq-list reveal">
+                    <details>
+                        <summary>What is paint protection film?</summary>
+                        <p>It is a clear film applied to selected body panels to help protect the paint from everyday wear. Film types and their properties vary by product.</p>
+                    </details>
+                    <details>
+                        <summary>Can I choose which parts of my car to protect?</summary>
+                        <p>Yes. You can ask about specific panels or broader coverage. We will review your car's model and explain the proposed coverage before you decide.</p>
+                    </details>
+                    <details>
+                        <summary>How do I find out the price and expected timing?</summary>
+                        <p>Send us your car's make, model, year and the areas you are considering via WhatsApp. We will share the available details before confirming an appointment.</p>
+                    </details>
+                    <details>
+                        <summary>Is there a warranty on the film or installation?</summary>
+                        <p>Terms vary depending on the product and service. Please ask for the written warranty details for the specific film and installation before booking.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact" id="contact">
+            <div class="container">
+                <div class="contact-card reveal">
+                    <div class="contact-copy">
+                        <span class="eyebrow">Your car deserves considered care</span>
+                        <h2 class="serif">Let's find your kind of protection.</h2>
+                        <p>Tell us about your car and what matters to you. We will help you explore coverage and request a tailored quote in Egypt.</p>
+                    </div>
+                    <div class="contact-action">
+                        <a class="button" data-whatsapp data-message="Hello Lumina Shield, I'd like to ask about paint protection for my car. My car's make and model are: " href="https://wa.me/201035419531">Start a conversation <span aria-hidden="true">↗</span></a>
+                        <small>WhatsApp or phone</small>
+                        <a class="contact-phone" href="tel:+201035419531" dir="ltr">+20 10 3541 9531</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-row">
+            <a class="brand" href="#home"><span class="brand-mark">L</span><span class="brand-name">LUMINA <span>SHIELD</span></span></a>
+            <div>Thoughtful paint protection · Egypt</div>
+            <div class="footer-links">
+                <a href="#services">Services</a>
+                <a href="#packages">Coverage</a>
+                <a href="tel:+201035419531" dir="ltr">+20 10 3541 9531</a>
+            </div>
+        </div>
+    </footer>
+
+    <a class="whatsapp-float" data-whatsapp data-message="Hello, I'd like to ask about paint protection for my car." href="https://wa.me/201035419531" aria-label="Contact Lumina Shield on WhatsApp">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 11.7a8 8 0 0 1-11.8 7l-4.2 1.1 1.1-4.1A8 8 0 1 1 20 11.7Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8.5c.4 2.2 2 3.8 4.4 4.6l1-1.1 2 .9c-.1 1.1-.8 1.8-2 1.8-3.5-.3-6.7-3.4-7-6.8 0-1.2.7-1.9 1.8-2l.9 2L9 8.5Z" fill="currentColor"/></svg>
+    </a>
+
+    <script>
+        const whatsappNumber = "201035419531";
+        document.querySelectorAll("[data-whatsapp]").forEach((link) => {
+            const message = link.dataset.message || "Hello, I'd like to ask about Lumina Shield's services.";
+            link.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+        });
+
+        const intro = document.getElementById("intro");
+        const enterExperience = () => {
+            intro.classList.add("is-entered");
+            document.body.classList.remove("intro-locked");
+            window.setTimeout(() => { intro.hidden = true; }, 850);
+        };
+        document.getElementById("enter-experience").addEventListener("click", enterExperience);
+        document.getElementById("skip-intro").addEventListener("click", enterExperience);
+
+        const menuToggle = document.getElementById("menu-toggle");
+        const primaryNavigation = document.getElementById("primary-navigation");
+        menuToggle.addEventListener("click", () => {
+            const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+            menuToggle.setAttribute("aria-expanded", String(!isOpen));
+            menuToggle.setAttribute("aria-label", isOpen ? "Open navigation" : "Close navigation");
+            primaryNavigation.classList.toggle("is-open", !isOpen);
+        });
+        primaryNavigation.addEventListener("click", (event) => {
+            if (event.target.closest("a")) {
+                primaryNavigation.classList.remove("is-open");
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuToggle.setAttribute("aria-label", "Open navigation");
+            }
+        });
+
+        const hero = document.querySelector(".hero");
+        const heroSticky = document.querySelector(".hero-sticky");
+        const heroCopy = document.querySelector(".hero-copy");
+        const cinemaCopies = document.querySelectorAll("[data-cinema-copy]");
+        const cinemaProgressFill = document.getElementById("cinema-progress-fill");
+        const cinemaProgressNumber = document.getElementById("cinema-progress-number");
+        const cinemaProgressCaption = document.getElementById("cinema-progress-caption");
+        const cinemaProgressTrack = document.querySelector(".cinema-progress-track");
+        const cinemaPhases = [
+            "The original profile",
+            "Every angle, considered",
+            "Clarity, preserved",
+            "Made to be kept"
+        ];
+        let heroProgress = 0;
+        let heroScrollFrame = 0;
+
+        function updateHeroExperience() {
+            heroScrollFrame = 0;
+            const bounds = hero.getBoundingClientRect();
+            const travelDistance = Math.max(1, hero.offsetHeight - heroSticky.offsetHeight);
+            heroProgress = Math.min(1, Math.max(0, -bounds.top / travelDistance));
+            const percent = Math.round(heroProgress * 100);
+            const phase = Math.min(cinemaPhases.length - 1, Math.floor(heroProgress * cinemaPhases.length));
+
+            cinemaProgressFill.style.width = `${percent}%`;
+            cinemaProgressCaption.textContent = cinemaPhases[phase];
+            cinemaProgressNumber.textContent = percent ? `${percent}%` : "Scroll to explore";
+            cinemaProgressTrack.setAttribute("aria-valuenow", String(percent));
+            heroCopy.classList.toggle("is-scrolling", heroProgress > .08);
+            cinemaCopies.forEach((copy, index) => {
+                copy.classList.toggle("is-active", heroProgress > .08 && Math.floor(index / 2) === phase);
+            });
+            document.querySelector('[data-scene="hero"]').dispatchEvent(
+                new CustomEvent("cinematicprogress", { detail: heroProgress })
+            );
+        }
+
+        function requestHeroUpdate() {
+            if (!heroScrollFrame) heroScrollFrame = window.requestAnimationFrame(updateHeroExperience);
+        }
+        window.addEventListener("scroll", requestHeroUpdate, { passive: true });
+        window.addEventListener("resize", requestHeroUpdate);
+        updateHeroExperience();
+
+        const journey = document.querySelector(".journey");
+        const progressFill = document.getElementById("progress-fill");
+        const progressNumber = document.getElementById("progress-number");
+        const progressTrack = document.querySelector(".progress-track");
+        const journeyStep = document.getElementById("journey-step");
+        let scrollFrame = 0;
+        let journeyProgress = 0;
+        const journeyPhases = [
+            "01 — The original finish",
+            "02 — Careful preparation",
+            "03 — A clear layer takes shape",
+            "04 — The finish, preserved"
+        ];
+
+        function updateJourneyProgress() {
+            scrollFrame = 0;
+            const bounds = journey.getBoundingClientRect();
+            const distance = Math.max(1, bounds.height - window.innerHeight);
+            journeyProgress = Math.min(1, Math.max(0, -bounds.top / distance));
+            const percent = Math.round(journeyProgress * 100);
+            progressFill.style.width = `${percent}%`;
+            progressNumber.textContent = `${percent}%`;
+            progressTrack.setAttribute("aria-valuenow", String(percent));
+            const phase = Math.min(journeyPhases.length - 1, Math.floor(journeyProgress * journeyPhases.length));
+            journeyStep.textContent = journeyPhases[phase];
+            document.querySelectorAll('[data-scene="journey"]').forEach((canvas) => {
+                canvas.dispatchEvent(new CustomEvent("journeyprogress", { detail: journeyProgress }));
+            });
+        }
+        function requestJourneyUpdate() {
+            if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateJourneyProgress);
+        }
+        window.addEventListener("scroll", requestJourneyUpdate, { passive: true });
+        window.addEventListener("resize", requestJourneyUpdate);
+        updateJourneyProgress();
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
+    </script>
+    <script type="module">
+        const stageFallbacks = document.querySelectorAll(".stage-fallback");
+        try {
+            const THREE = await import("https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js");
+            const { GLTFLoader } = await import("https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/loaders/GLTFLoader.js");
+            const modelInstances = [];
+            const cinematicCameraKeys = [
+                { position: [3.8, 2.4, 7.6], target: [-.75, .9, 0] },
+                { position: [2.1, 2.1, 7.3], target: [-.2, .75, .7] },
+                { position: [-5.5, 2.2, 6.2], target: [0, .7, .2] },
+                { position: [-8.2, 1.8, 1.5], target: [0, .65, 0] },
+                { position: [5.4, 3.2, -7.7], target: [0, .65, 0] },
+                { position: [0, 2.1, 9.5], target: [0, .7, 0] }
+            ];
+            const getCameraDistanceScale = () => window.innerWidth < 681 ? 1.24 : 1;
+            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const loader = new GLTFLoader();
+        const carAsset = await loader.loadAsync(new URL("./scene.gltf", document.baseURI).href);
+
+        function makeCar() {
+            const car = new THREE.Group();
+            const model = carAsset.scene.clone(true);
+            const bounds = new THREE.Box3().setFromObject(model);
+            const center = bounds.getCenter(new THREE.Vector3());
+            const size = bounds.getSize(new THREE.Vector3());
+            const scale = 4.4 / size.z;
+            const carPaintMaterials = [];
+            const carPaintMeshes = [];
+
+            model.scale.setScalar(scale);
+            model.position.set(-center.x * scale, -bounds.min.y * scale, -center.z * scale);
+            model.traverse((part) => {
+                if (!part.isMesh) return;
+
+                part.castShadow = true;
+                part.receiveShadow = true;
+                const materials = Array.isArray(part.material) ? part.material : [part.material];
+                const updatedMaterials = materials.map((sourceMaterial) => {
+                    const name = sourceMaterial.name || "";
+                    if (name === "CarPaint") {
+                        const material = new THREE.MeshPhysicalMaterial().copy(sourceMaterial);
+                        material.color.set(0xaeb8c4);
+                        material.metalness = .85;
+                        material.roughness = .26;
+                        material.clearcoat = 1;
+                        material.clearcoatRoughness = .04;
+                        material.userData.originalRoughness = material.roughness;
+                        material.emissive.set(0x7d91a3);
+                        material.emissiveIntensity = 0;
+                        carPaintMaterials.push(material);
+                        carPaintMeshes.push(part);
+                        return material;
+                    }
+                    if (/glass|Windows/i.test(name)) {
+                        const material = sourceMaterial.clone();
+                        material.color.set(0x253139);
+                        material.metalness = .55;
+                        material.roughness = .12;
+                        return material;
+                    }
+                    if (/Callip/i.test(name)) {
+                        const material = sourceMaterial.clone();
+                        material.color.set(0xa81c1c);
+                        return material;
+                    }
+                    return sourceMaterial.clone();
+                });
+                part.material = Array.isArray(part.material) ? updatedMaterials : updatedMaterials[0];
+            });
+
+            const filmMaterial = new THREE.ShaderMaterial({
+                transparent: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending,
+                polygonOffset: true,
+                polygonOffsetFactor: -2,
+                polygonOffsetUnits: -2,
+                side: THREE.DoubleSide,
+                uniforms: {
+                    uP: { value: -1 },
+                    uZmin: { value: -2.2 },
+                    uZmax: { value: 2.2 },
+                    uT: { value: 0 },
+                    uC: { value: new THREE.Color(0x8ee6e0) }
+                },
+                vertexShader: `
+                    varying vec3 vW;
+                    varying vec3 vN;
+                    varying vec3 vV;
+                    void main() {
+                        vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+                        vW = worldPosition.xyz;
+                        vN = normalize(mat3(modelMatrix) * normal);
+                        vV = normalize(cameraPosition - worldPosition.xyz);
+                        gl_Position = projectionMatrix * viewMatrix * worldPosition;
+                    }
+                `,
+                fragmentShader: `
+                    uniform float uP;
+                    uniform float uZmin;
+                    uniform float uZmax;
+                    uniform float uT;
+                    uniform vec3 uC;
+                    varying vec3 vW;
+                    varying vec3 vN;
+                    varying vec3 vV;
+                    void main() {
+                        float u = (uZmax - vW.z) / (uZmax - uZmin);
+                        float edge = smoothstep(0.035, 0.0, abs(u - uP));
+                        float revealed = step(u, uP);
+                        float fresnel = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.2);
+                        vec2 gridCoord = abs(fract(vec2(vW.x + vW.z * 0.5, vW.y * 1.1 + vW.z * 0.28) * 9.0) - 0.5);
+                        float grid = smoothstep(0.45, 0.5, max(gridCoord.x, gridCoord.y));
+                        float shimmer = smoothstep(0.9, 1.0, sin(vW.z * 3.0 - uT * 1.5 + vW.y * 2.0)) * 0.25;
+                        float alpha = revealed * (0.05 + fresnel * 0.6 + grid * 0.16 + shimmer) + edge * 0.9;
+                        gl_FragColor = vec4(uC * (1.0 + edge * 1.5), clamp(alpha, 0.0, 1.0));
+                    }
+                `
+            });
+            carPaintMeshes.forEach((part) => {
+                const film = new THREE.Mesh(part.geometry, filmMaterial);
+                film.renderOrder = 2;
+                part.add(film);
+            });
+
+            const sweepMaterial = new THREE.MeshBasicMaterial({
+                color: 0xc3a36c,
+                transparent: true,
+                opacity: 0,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending,
+                side: THREE.DoubleSide
+            });
+            const sweep = new THREE.Mesh(new THREE.PlaneGeometry(2.0, .035), sweepMaterial);
+            sweep.position.set(0, .82, -2.35);
+            car.add(model, sweep);
+
+            const paint = {
+                set clearcoat(value) {
+                    carPaintMaterials.forEach((material) => { material.clearcoat = value; });
+                },
+                set clearcoatRoughness(value) {
+                    carPaintMaterials.forEach((material) => { material.clearcoatRoughness = value; });
+                },
+                set roughnessOffset(value) {
+                    carPaintMaterials.forEach((material) => {
+                        material.roughness = THREE.MathUtils.clamp(material.userData.originalRoughness + value, 0, 1);
+                    });
+                },
+                set polish(value) {
+                    const progress = THREE.MathUtils.clamp(value, 0, 1);
+                    carPaintMaterials.forEach((material) => {
+                        material.roughness = THREE.MathUtils.lerp(.62, .09, progress);
+                        material.clearcoat = THREE.MathUtils.lerp(.12, 1, progress);
+                        material.clearcoatRoughness = THREE.MathUtils.lerp(.55, .035, progress);
+                        material.emissiveIntensity = progress * .12;
+                    });
+                }
+            };
+
+            return { car, filmMaterial, sweep, paint };
+        }
+
+        function createScene(canvas, type) {
+                const scene = new THREE.Scene();
+                const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.7));
+                renderer.shadowMap.enabled = true;
+                renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+                renderer.toneMapping = THREE.ACESFilmicToneMapping;
+                renderer.toneMappingExposure = 1.08;
+
+                const camera = new THREE.PerspectiveCamera(31, 1, .1, 100);
+                const isIntro = type === "intro";
+                const isJourney = type === "journey";
+                const isHero = type === "hero";
+                const getCameraFov = () => window.innerWidth < 681 ? 48 : 31;
+                const getCameraZoom = () => window.innerWidth < 681 ? 1.1 : 1.4;
+                camera.fov = getCameraFov();
+                camera.zoom = getCameraZoom();
+                if (isIntro) {
+                    camera.position.set(3.8, 2.45, 6.4);
+                    camera.lookAt(0, .95, 0);
+                } else if (isHero) {
+                    const firstKey = cinematicCameraKeys[0];
+                    const firstTarget = new THREE.Vector3(...firstKey.target);
+                    const firstOffset = new THREE.Vector3(...firstKey.position).sub(firstTarget).multiplyScalar(getCameraDistanceScale());
+                    camera.position.copy(firstTarget).add(firstOffset);
+                    camera.lookAt(firstTarget);
+                } else {
+                    camera.position.set(isJourney ? 6.3 : 6.8, 3.5, isJourney ? 9.3 : 10);
+                    camera.lookAt(0, .95, 0);
+                }
+                const cameraDestination = new THREE.Vector3();
+                const cameraTarget = new THREE.Vector3(...(isHero ? cinematicCameraKeys[0].target : [0, .95, 0]));
+                const targetDestination = cameraTarget.clone();
+
+                const ambientLight = new THREE.HemisphereLight(0xe8e7df, 0x303b33, isHero ? 1.1 : 2.1);
+                scene.add(ambientLight);
+                const keyLight = new THREE.DirectionalLight(0xffefce, isHero ? 1.6 : 3.5);
+                keyLight.position.set(-3, 7, 6);
+                keyLight.castShadow = true;
+                keyLight.shadow.mapSize.set(1024, 1024);
+                scene.add(keyLight);
+                const rimLight = new THREE.PointLight(0x9bb29d, isHero ? 8 : 30, 12);
+                rimLight.position.set(-3, 3, -3);
+                scene.add(rimLight);
+                const fillLight = new THREE.PointLight(0xc7a970, isHero ? 6 : 18, 10);
+                fillLight.position.set(4, 4, 4);
+                scene.add(fillLight);
+
+                const shadowCanvas = document.createElement("canvas");
+                shadowCanvas.width = 256;
+                shadowCanvas.height = 256;
+                const shadowContext = shadowCanvas.getContext("2d");
+                const shadowGradient = shadowContext.createRadialGradient(128, 128, 18, 128, 128, 126);
+                shadowGradient.addColorStop(0, "rgba(0,0,0,.5)");
+                shadowGradient.addColorStop(.48, "rgba(0,0,0,.28)");
+                shadowGradient.addColorStop(1, "rgba(0,0,0,0)");
+                shadowContext.fillStyle = shadowGradient;
+                shadowContext.fillRect(0, 0, 256, 256);
+                const shadowTexture = new THREE.CanvasTexture(shadowCanvas);
+                const groundShadow = new THREE.Mesh(
+                    new THREE.PlaneGeometry(5.7, 2.8),
+                    new THREE.MeshBasicMaterial({
+                        map: shadowTexture,
+                        transparent: true,
+                        depthWrite: false,
+                        toneMapped: false
+                    })
+                );
+                groundShadow.rotation.x = -Math.PI / 2;
+                groundShadow.position.y = .045;
+                scene.add(groundShadow);
+
+                // --- التصحيح هنا: استدعاء دالة makeCar قبل استخدام المتغير car ---
+                const { car, filmMaterial, sweep, paint } = makeCar();
+
+                car.position.y = .08;
+                car.rotation.y = -.2;
+                scene.add(car);
+
+                const resize = () => {
+                    const bounds = canvas.getBoundingClientRect();
+                    if (!bounds.width || !bounds.height) return;
+                    renderer.setSize(bounds.width, bounds.height, false);
+                    camera.aspect = bounds.width / bounds.height;
+                    camera.fov = getCameraFov();
+                    camera.zoom = getCameraZoom();
+                    camera.updateProjectionMatrix();
+                };
+                const resizeObserver = new ResizeObserver(resize);
+                resizeObserver.observe(canvas);
+                resize();
+
+                let progress = 0;
+                let pointerDown = false;
+                let pointerX = 0;
+                let targetRotation = -.2;
+                let targetTilt = 0;
+                const canDrag = !isIntro;
+                if (canDrag) {
+                    canvas.addEventListener("pointerdown", (event) => {
+                        pointerDown = true;
+                        pointerX = event.clientX;
+                        canvas.setPointerCapture(event.pointerId);
+                    });
+                    canvas.addEventListener("pointermove", (event) => {
+                        if (!pointerDown) return;
+                        model.manualRotation += (event.clientX - pointerX) * .008;
+                        pointerX = event.clientX;
+                        model.targetTilt = Math.max(-.12, Math.min(.12, (event.clientY / window.innerHeight - .5) * .18));
+                    });
+                    canvas.addEventListener("pointerup", () => { pointerDown = false; });
+                    canvas.addEventListener("pointercancel", () => { pointerDown = false; });
+                }
+                if (isJourney) {
+                    canvas.addEventListener("journeyprogress", (event) => {
+                        model.progress = event.detail;
+                    });
+                }
+                if (isHero) {
+                    canvas.addEventListener("cinematicprogress", (event) => {
+                        model.targetProgress = event.detail;
+                    });
+                }
+
+                // --- تجميع الموديل وإضافته للمصفوفة ---
+                const model = { renderer, scene, camera, cameraDestination, cameraTarget, targetDestination, car, filmMaterial, sweep, paint, ambientLight, keyLight, rimLight, fillLight, type, resize, progress: 0, targetProgress: 0, manualRotation: 0, targetTilt: 0 };
+                modelInstances.push(model);
+            }
+
+            document.querySelectorAll(".scene-canvas").forEach((canvas) => createScene(canvas, canvas.dataset.scene));
+            document.querySelector(".intro-car-fallback").style.display = "none";
+
+            const clock = new THREE.Clock();
+            function render() {
+                const delta = Math.min(clock.getDelta(), .05);
+                const time = clock.elapsedTime;
+                for (const model of modelInstances) {
+                    const { renderer, scene, camera, car, filmMaterial, sweep, paint, type } = model;
+                    const bounds = renderer.domElement.getBoundingClientRect();
+                    if (bounds.width === 0 || bounds.height === 0 || bounds.bottom < 0 || bounds.top > window.innerHeight || bounds.right < 0 || bounds.left > window.innerWidth) continue;
+                    if (type === "hero") {
+                        model.progress = prefersReducedMotion
+                            ? model.targetProgress
+                            : THREE.MathUtils.damp(model.progress, model.targetProgress, 7, delta);
+                        paint.polish = model.progress;
+                        model.ambientLight.intensity = THREE.MathUtils.lerp(1.1, 2.3, model.progress);
+                        model.keyLight.intensity = THREE.MathUtils.lerp(1.6, 4, model.progress);
+                        model.rimLight.intensity = THREE.MathUtils.lerp(8, 36, model.progress);
+                        model.fillLight.intensity = THREE.MathUtils.lerp(6, 22, model.progress);
+                        const cameraPosition = (prefersReducedMotion ? 0 : model.progress) * (cinematicCameraKeys.length - 1);
+                        const cameraIndex = Math.min(cinematicCameraKeys.length - 2, Math.floor(cameraPosition));
+                        const segmentProgress = cameraPosition - cameraIndex;
+                        const easedProgress = segmentProgress * segmentProgress * (3 - 2 * segmentProgress);
+                        const startKey = cinematicCameraKeys[cameraIndex];
+                        const endKey = cinematicCameraKeys[cameraIndex + 1];
+                        const distanceScale = getCameraDistanceScale();
+                        model.targetDestination.set(
+                            THREE.MathUtils.lerp(startKey.target[0], endKey.target[0], easedProgress),
+                            THREE.MathUtils.lerp(startKey.target[1], endKey.target[1], easedProgress),
+                            THREE.MathUtils.lerp(startKey.target[2], endKey.target[2], easedProgress)
+                        );
+                        const startOffset = new THREE.Vector3(...startKey.position).sub(new THREE.Vector3(...startKey.target));
+                        const endOffset = new THREE.Vector3(...endKey.position).sub(new THREE.Vector3(...endKey.target));
+                        const startAzimuth = Math.atan2(startOffset.x, startOffset.z);
+                        const endAzimuth = startAzimuth + THREE.MathUtils.euclideanModulo(
+                            Math.atan2(endOffset.x, endOffset.z) - startAzimuth + Math.PI,
+                            Math.PI * 2
+                        ) - Math.PI;
+                        const startElevation = Math.atan2(startOffset.y, Math.hypot(startOffset.x, startOffset.z));
+                        const endElevation = Math.atan2(endOffset.y, Math.hypot(endOffset.x, endOffset.z));
+                        const radius = Math.max(8, THREE.MathUtils.lerp(startOffset.length(), endOffset.length(), easedProgress)) * distanceScale;
+                        const azimuth = THREE.MathUtils.lerp(startAzimuth, endAzimuth, easedProgress);
+                        const elevation = THREE.MathUtils.lerp(startElevation, endElevation, easedProgress);
+                        const horizontalRadius = radius * Math.cos(elevation);
+                        model.cameraDestination.set(
+                            model.targetDestination.x + Math.sin(azimuth) * horizontalRadius,
+                            model.targetDestination.y + Math.sin(elevation) * radius,
+                            model.targetDestination.z + Math.cos(azimuth) * horizontalRadius
+                        );
+                        const cameraEase = 1 - Math.exp(-delta * 5);
+                        camera.position.lerp(model.cameraDestination, cameraEase);
+                        model.cameraTarget.lerp(model.targetDestination, cameraEase);
+                        camera.lookAt(model.cameraTarget);
+                    }
+                    const autoRotation = type === "journey" ? -.2 + Math.sin(time * .16) * .07 : -.2 + Math.sin(time * .23) * .13;
+                    const desiredRotation = type === "intro" ? -.14 : type === "hero" ? -.2 + model.manualRotation : autoRotation + model.manualRotation;
+                    car.rotation.y += (desiredRotation - car.rotation.y) * .035;
+                    const desiredTilt = type === "journey" ? Math.sin(model.progress * Math.PI) * .025 + model.targetTilt : model.targetTilt;
+                    car.rotation.z += (desiredTilt - car.rotation.z) * .04;
+                    car.position.y = .08 + Math.sin(time * 1.2 + (type === "intro" ? .6 : 0)) * .025;
+                    if (type === "journey") {
+                        const sweepProgress = Math.max(0, Math.min(1, (model.progress - .08) / .84));
+                        filmMaterial.uniforms.uP.value = sweepProgress * 1.15 - .05;
+                        filmMaterial.uniforms.uT.value = time;
+                        sweep.position.z = -2.35 + sweepProgress * 4.7;
+                        sweep.material.opacity = sweepProgress > 0 && sweepProgress < 1 ? .7 : 0;
+                        sweep.scale.y = 1 + Math.sin(sweepProgress * Math.PI) * .12;
+                        paint.roughnessOffset = .4 - sweepProgress * .4;
+                        paint.clearcoat = sweepProgress;
+                        paint.clearcoatRoughness = .8 - sweepProgress * .8;
+                    } else {
+                        paint.roughnessOffset = 0;
+                        paint.clearcoat = 1;
+                        paint.clearcoatRoughness = 0;
+                    }
+                    renderer.render(scene, camera);
+                }
+                window.requestAnimationFrame(render);
+            }
+            render();
+        } catch (error) {
+            console.error("The 3D experience could not be initialized.", error);
+            stageFallbacks.forEach((fallback) => {
+                fallback.style.display = "block";
+                fallback.textContent = "The interactive 3D view could not load. Please check your connection and refresh to try again.";
+            });
+        }
+    </script>
+</body>
+</html>
