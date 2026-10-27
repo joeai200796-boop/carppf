@@ -819,9 +819,9 @@
         let journeyProgress = 0;
         const journeyPhases = [
             "01 — The original finish",
-            "02 — Careful preparation",
-            "03 — A clear layer takes shape",
-            "04 — The finish, preserved"
+            "02 — Fitting the clear film",
+            "03 — Squeegee application",
+            "04 — Polished, protected finish"
         ];
 
         function updateJourneyProgress() {
@@ -873,7 +873,7 @@
             const getCameraDistanceScale = () => window.innerWidth < 681 ? 1.35 : 1;
             const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const loader = new GLTFLoader();
-        const carAsset = await loader.loadAsync(new URL("./scene.gltf", document.baseURI).href);
+        const carAsset = await loader.loadAsync(new URL("./scene.glb", document.baseURI).href);
 
         function makeCar() {
             const car = new THREE.Group();
@@ -975,10 +975,10 @@
                         float alpha = revealed * (
                             0.05
                             + fresnel * mix(0.6, 0.3, uApplicationStyle)
-                            + grid * mix(0.16, 0.035, uApplicationStyle)
+                            + grid * mix(0.16, 0.018, uApplicationStyle)
                             + shimmer * mix(1.0, 0.6, uApplicationStyle)
-                        ) + edge * mix(0.9, 0.8, uApplicationStyle);
-                        gl_FragColor = vec4(uC * (1.0 + edge * 1.5), clamp(alpha, 0.0, 1.0));
+                        ) + edge * mix(0.9, 0.6, uApplicationStyle);
+                        gl_FragColor = vec4(uC * (1.0 + edge * 1.25), clamp(alpha, 0.0, 1.0));
                     }
                 `
             });
@@ -1096,12 +1096,11 @@
 
                 // --- التصحيح هنا: استدعاء دالة makeCar قبل استخدام المتغير car ---
                 const { car, filmMaterial, sweep, paint } = makeCar();
-                if (isHero) {
                     filmMaterial.uniforms.uApplicationStyle.value = 1;
-                    filmMaterial.uniforms.uC.value.set(0xa6d9d3);
-                }
+                    filmMaterial.uniforms.uC.value.set(isHero ? 0xa6d9d3 : 0xd9eee7);
+                    if (isJourney) filmMaterial.blending = THREE.NormalBlending;
 
-                car.position.y = .08;
+                    car.position.y = .08;
                 car.rotation.y = -.2;
                 scene.add(car);
 
@@ -1221,7 +1220,7 @@
                         filmMaterial.uniforms.uP.value = sweepProgress * 1.15 - .05;
                         filmMaterial.uniforms.uT.value = time;
                         sweep.position.z = -2.35 + sweepProgress * 4.7;
-                        sweep.material.opacity = sweepProgress > 0 && sweepProgress < 1 ? .32 : 0;
+                        sweep.material.opacity = sweepProgress > 0 && sweepProgress < 1 ? .2 : 0;
                         sweep.scale.y = 1 + Math.sin(sweepProgress * Math.PI) * .12;
                         paint.roughnessOffset = .4 - sweepProgress * .4;
                         paint.clearcoat = sweepProgress;
