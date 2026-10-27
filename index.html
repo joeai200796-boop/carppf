@@ -392,7 +392,8 @@
             .hero-copy { top: 6%; left: 19px; width: calc(100% - 38px); padding: 0; transform: none; }
             .hero-copy.is-scrolling { transform: translateY(-18px); }
             .hero .eyebrow { font-size: .58rem; }
-            .hero h1 { max-width: 340px; margin: 14px 0 11px; font-size: clamp(3.4rem, 13vw, 5rem); }
+            .hero h1 { max-width: 340px; margin: 14px 0 11px; font-size: clamp(3.4rem, 13vw, 5rem); line-height: .94; }
+            .hero h1 span { margin-top: .2em; }
             .hero-copy > p { max-width: 340px; margin-bottom: 13px; font-size: .68rem; line-height: 1.65; }
             .hero-actions { gap: 7px; }
             .hero-actions .button { min-height: 39px; padding-inline: 11px; font-size: .5rem; }
@@ -988,7 +989,7 @@
             });
 
             const sweepMaterial = new THREE.MeshBasicMaterial({
-                color: 0xc3a36c,
+                color: 0xd8f3ed,
                 transparent: true,
                 opacity: 0,
                 depthWrite: false,
@@ -1178,9 +1179,12 @@
                         const startKey = cinematicCameraKeys[cameraIndex];
                         const endKey = cinematicCameraKeys[cameraIndex + 1];
                         const distanceScale = getCameraDistanceScale();
+                        const openingComposition = window.innerWidth < 681
+                            ? 1 - THREE.MathUtils.smoothstep(model.progress, 0, .2)
+                            : 0;
                         model.targetDestination.set(
                             THREE.MathUtils.lerp(startKey.target[0], endKey.target[0], easedProgress),
-                            THREE.MathUtils.lerp(startKey.target[1], endKey.target[1], easedProgress),
+                            THREE.MathUtils.lerp(startKey.target[1], endKey.target[1], easedProgress) - .45 * openingComposition,
                             THREE.MathUtils.lerp(startKey.target[2], endKey.target[2], easedProgress)
                         );
                         const startOffset = new THREE.Vector3(...startKey.position).sub(new THREE.Vector3(...startKey.target));
@@ -1217,7 +1221,7 @@
                         filmMaterial.uniforms.uP.value = sweepProgress * 1.15 - .05;
                         filmMaterial.uniforms.uT.value = time;
                         sweep.position.z = -2.35 + sweepProgress * 4.7;
-                        sweep.material.opacity = sweepProgress > 0 && sweepProgress < 1 ? .7 : 0;
+                        sweep.material.opacity = sweepProgress > 0 && sweepProgress < 1 ? .32 : 0;
                         sweep.scale.y = 1 + Math.sin(sweepProgress * Math.PI) * .12;
                         paint.roughnessOffset = .4 - sweepProgress * .4;
                         paint.clearcoat = sweepProgress;
