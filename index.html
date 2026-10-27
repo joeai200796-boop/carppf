@@ -210,7 +210,7 @@
         .cinema-progress { position: absolute; z-index: 4; right: 50%; bottom: 4.5%; width: min(420px, 44vw); transform: translateX(50%); }
         .cinema-progress-label { display: flex; justify-content: space-between; gap: 14px; margin-bottom: 10px; color: rgba(244,242,236,.62); font-size: .55rem; letter-spacing: .14em; text-transform: uppercase; }
         .cinema-progress-track { height: 2px; overflow: hidden; background: rgba(244,242,236,.19); }
-        .cinema-progress-fill { width: 0; height: 100%; background: linear-gradient(90deg, #c3a36c, #e7deca); }
+        .cinema-progress-fill { width: 0; height: 100%; background: linear-gradient(90deg, #c3a36c, #8ee6e0, #e7deca); }
         .hero-sticky .scroll-cue { bottom: 1.5%; }
         .hero .stage-fallback { top: 60%; bottom: auto; }
         .hero .eyebrow { color: #d0bd96; }
@@ -495,7 +495,7 @@
                         <div class="hero-note">A tailored recommendation, made around your car.</div>
                     </div>
                     <div class="hero-stage" data-stage>
-                        <canvas class="scene-canvas" data-scene="hero" aria-label="Interactive 3D Mercedes-Benz S65 AMG. Scroll to explore cinematic camera views or drag to rotate."></canvas>
+                        <canvas class="scene-canvas" data-scene="hero" aria-label="Interactive 3D Mercedes-Benz S65 AMG. Scroll to see clear paint protection film applied across the car, or drag to rotate."></canvas>
                         <span class="stage-index">01 / THE ORIGINAL</span>
                         <span class="stage-label">Mercedes-Benz S65 AMG · <a class="model-credit" href="https://sketchfab.com/3d-models/2015-mercedes-benz-s65-amg-coupe-a9a2e24df28049ce83e9c35cc1a2b3fa" target="_blank" rel="noopener noreferrer">Model by Ddiaz Design</a></span>
                         <div class="cinema-copy cinema-copy--left" data-cinema-copy aria-hidden="true">
@@ -773,10 +773,10 @@
         const cinemaProgressCaption = document.getElementById("cinema-progress-caption");
         const cinemaProgressTrack = document.querySelector(".cinema-progress-track");
         const cinemaPhases = [
-            "The original profile",
-            "Every angle, considered",
-            "Clarity, preserved",
-            "Made to be kept"
+            "Original paint",
+            "Precision application",
+            "Crystal-clear protection",
+            "Protected finish"
         ];
         let heroProgress = 0;
         let heroScrollFrame = 0;
@@ -938,7 +938,8 @@
                     uZmin: { value: -2.2 },
                     uZmax: { value: 2.2 },
                     uT: { value: 0 },
-                    uC: { value: new THREE.Color(0x8ee6e0) }
+                    uC: { value: new THREE.Color(0x8ee6e0) },
+                    uApplicationStyle: { value: 0 }
                 },
                 vertexShader: `
                     varying vec3 vW;
@@ -958,6 +959,7 @@
                     uniform float uZmax;
                     uniform float uT;
                     uniform vec3 uC;
+                    uniform float uApplicationStyle;
                     varying vec3 vW;
                     varying vec3 vN;
                     varying vec3 vV;
@@ -969,7 +971,12 @@
                         vec2 gridCoord = abs(fract(vec2(vW.x + vW.z * 0.5, vW.y * 1.1 + vW.z * 0.28) * 9.0) - 0.5);
                         float grid = smoothstep(0.45, 0.5, max(gridCoord.x, gridCoord.y));
                         float shimmer = smoothstep(0.9, 1.0, sin(vW.z * 3.0 - uT * 1.5 + vW.y * 2.0)) * 0.25;
-                        float alpha = revealed * (0.05 + fresnel * 0.6 + grid * 0.16 + shimmer) + edge * 0.9;
+                        float alpha = revealed * (
+                            0.05
+                            + fresnel * mix(0.6, 0.3, uApplicationStyle)
+                            + grid * mix(0.16, 0.035, uApplicationStyle)
+                            + shimmer * mix(1.0, 0.6, uApplicationStyle)
+                        ) + edge * mix(0.9, 0.8, uApplicationStyle);
                         gl_FragColor = vec4(uC * (1.0 + edge * 1.5), clamp(alpha, 0.0, 1.0));
                     }
                 `
@@ -1088,6 +1095,10 @@
 
                 // --- التصحيح هنا: استدعاء دالة makeCar قبل استخدام المتغير car ---
                 const { car, filmMaterial, sweep, paint } = makeCar();
+                if (isHero) {
+                    filmMaterial.uniforms.uApplicationStyle.value = 1;
+                    filmMaterial.uniforms.uC.value.set(0xa6d9d3);
+                }
 
                 car.position.y = .08;
                 car.rotation.y = -.2;
@@ -1154,6 +1165,8 @@
                             ? model.targetProgress
                             : THREE.MathUtils.damp(model.progress, model.targetProgress, 7, delta);
                         paint.polish = model.progress;
+                        filmMaterial.uniforms.uP.value = model.progress * 1.15 - .05;
+                        filmMaterial.uniforms.uT.value = time;
                         model.ambientLight.intensity = THREE.MathUtils.lerp(1.1, 2.3, model.progress);
                         model.keyLight.intensity = THREE.MathUtils.lerp(1.6, 4, model.progress);
                         model.rimLight.intensity = THREE.MathUtils.lerp(8, 36, model.progress);
